@@ -56,6 +56,10 @@
     [labelView setDelegate:self];
     [labelView setShowsContentShadow:NO];
     [labelView setEnableMoveRestriction:YES];
+    labelView.needToMakeCustomBackground = YES;
+    labelView.minimumWidth = 200;
+    
+    [labelView setEnableClose: NO];
     [labelView setFontName:@"Baskerville-BoldItalic"];
     [labelView setFontSize:21.0];
     
@@ -112,10 +116,6 @@
     [labels removeObject:label];
 }
 
-- (void)labelViewDidBeginEditing:(IQLabelView *)label
-{
-    // move or rotate begin
-}
 
 - (void)labelViewDidShowEditingHandles:(IQLabelView *)label
 {
@@ -134,5 +134,36 @@
     // tap in text field and keyboard showing
     currentlyEditingLabel = label;
 }
+
+- (void)labelViewStartRotating:(IQLabelView*)label {
+    NSLog(@"labelViewStartRotating");
+}
+- (void)labelViewStopRotating:(IQLabelView*)label{
+    NSLog(@"labelViewStopRotating");
+}
+
+- (void)labelViewStartZooming: (IQLabelView*)label{
+    NSLog(@"labelViewStartZooming");
+}
+- (void)labelViewEndZooming: (IQLabelView*)label{
+    NSLog(@"labelViewEndZooming");
+}
+
+- (void)labelViewStartMoving: (IQLabelView*)label{
+    NSLog(@"labelViewStartMoving");
+}
+
+- (void)labelViewEndMoving: (IQLabelView*)label{
+    NSLog(@"labelViewEndMoving");
+}
+
+- (void)labelViewDidEndEditing:(IQLabelView *)label{
+    NSLog(@"labelViewDidEndEditing");
+}
+
+- (void)labelViewDidBeginEditing:(IQLabelView *)label {
+    NSLog(@"labelViewDidBeginEditing");
+}
+
 
 @end

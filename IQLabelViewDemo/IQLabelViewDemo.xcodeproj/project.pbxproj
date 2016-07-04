@@ -17,6 +17,7 @@
 		8BE215B81A4591D0006EC5A5 /* IQLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE215B41A4591D0006EC5A5 /* IQLabelView.m */; };
 		8BE215B91A4591D0006EC5A5 /* IQLabelView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BE215B51A4591D0006EC5A5 /* IQLabelView.bundle */; };
 		8BE215BA1A4591D0006EC5A5 /* UITextField+DynamicFontSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE215B71A4591D0006EC5A5 /* UITextField+DynamicFontSize.m */; };
+		CE4F51C31D2A6003008A23AE /* IQTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4F51C21D2A6003008A23AE /* IQTextField.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,8 @@
 		8BE215B51A4591D0006EC5A5 /* IQLabelView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = IQLabelView.bundle; sourceTree = "<group>"; };
 		8BE215B61A4591D0006EC5A5 /* UITextField+DynamicFontSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+DynamicFontSize.h"; sourceTree = "<group>"; };
 		8BE215B71A4591D0006EC5A5 /* UITextField+DynamicFontSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+DynamicFontSize.m"; sourceTree = "<group>"; };
+		CE4F51C11D2A6003008A23AE /* IQTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQTextField.h; sourceTree = "<group>"; };
+		CE4F51C21D2A6003008A23AE /* IQTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQTextField.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +134,8 @@
 		8BE215B21A4591D0006EC5A5 /* IQLabelView */ = {
 			isa = PBXGroup;
 			children = (
+				CE4F51C11D2A6003008A23AE /* IQTextField.h */,
+				CE4F51C21D2A6003008A23AE /* IQTextField.m */,
 				8BE215B31A4591D0006EC5A5 /* IQLabelView.h */,
 				8BE215B41A4591D0006EC5A5 /* IQLabelView.m */,
 				8BE215B51A4591D0006EC5A5 /* IQLabelView.bundle */,
@@ -246,6 +251,7 @@
 				8BE215B81A4591D0006EC5A5 /* IQLabelView.m in Sources */,
 				8BE215761A45902C006EC5A5 /* AppDelegate.m in Sources */,
 				8BE215731A45902C006EC5A5 /* main.m in Sources */,
+				CE4F51C31D2A6003008A23AE /* IQTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

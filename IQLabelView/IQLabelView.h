@@ -21,7 +21,14 @@
  * Default: red color.
  */
 @property (nonatomic, strong) UIColor *borderColor;
-
+/**
+ * Custom background for IQLabelView.
+ */
+@property (nonatomic, assign) BOOL needToMakeCustomBackground;
+/** 
+ *Need to set minimum width for IQLabelView
+*/
+@property (nonatomic, assign) CGFloat minimumWidth;
 /**
  * Name of text field font.
  * 
@@ -144,12 +151,6 @@
  */
 - (void)labelViewDidStartEditing:(IQLabelView *)label;
 
-/**
- *  Occurs when label starts move or rotate.
- *
- *  @param label    A label object informing the delegate about action.
- */
-- (void)labelViewDidBeginEditing:(IQLabelView *)label;
 
 /**
  *  Occurs when label continues move or rotate.
@@ -158,12 +159,28 @@
  */
 - (void)labelViewDidChangeEditing:(IQLabelView *)label;
 
+
+
+@required
+- (void)labelViewStartRotating:(IQLabelView*)label;
+- (void)labelViewStopRotating:(IQLabelView*)label;
+
+- (void)labelViewStartZooming: (IQLabelView*)label;
+- (void)labelViewEndZooming: (IQLabelView*)label;
+
+- (void)labelViewStartMoving: (IQLabelView*)label;
+- (void)labelViewEndMoving: (IQLabelView*)label;
+
 /**
- *  Occurs when label ends move or rotate.
- *
  *  @param label    A label object informing the delegate about action.
  */
 - (void)labelViewDidEndEditing:(IQLabelView *)label;
+
+
+/**
+ *  @param label    A label object informing the delegate about action.
+ */
+- (void)labelViewDidBeginEditing:(IQLabelView *)label;
 
 @end
 
