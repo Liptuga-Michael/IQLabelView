@@ -45,13 +45,13 @@ static IQLabelView *lastTouchedView;
 @implementation IQLabelView
 {
     CGFloat globalInset;
-
+    
     CGRect initialBounds;
     CGFloat initialDistance;
-
+    
     CGPoint beginningPoint;
     CGPoint beginningCenter;
-
+    
     CGPoint touchLocation;
     
     CGFloat deltaAngle;
@@ -128,7 +128,7 @@ static IQLabelView *lastTouchedView;
         [labelTextField setClipsToBounds:YES];
         labelTextField.delegate = self;
         labelTextField.backgroundColor = [UIColor clearColor];
-        labelTextField.tintColor = [UIColor redColor];
+        labelTextField.tintColor = [UIColor lightGrayColor];
         labelTextField.textColor = [UIColor whiteColor];
         labelTextField.text = @"";
         labelTextField.leftTextIndent = 14.0;
@@ -150,14 +150,18 @@ static IQLabelView *lastTouchedView;
         closeView.userInteractionEnabled = YES;
         [self addSubview:closeView];
         
-        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width-globalInset*2 + 5, self.bounds.size.height-globalInset*2 + 5, globalInset*2 + 10, globalInset*2 + 10)];
+        
+        
+        
+        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width-globalInset*2 - 8, self.bounds.size.height-globalInset*2 - 8, globalInset*2, globalInset*2)];
         [rotateView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin)];
+        
         rotateView.backgroundColor = [UIColor clearColor];
         rotateView.layer.cornerRadius = globalInset;
         rotateView.contentMode = UIViewContentModeCenter;
         rotateView.userInteractionEnabled = YES;
         
-        [self addSubview:rotateView];        
+        [self addSubview:rotateView];
         
         UIPanGestureRecognizer *moveGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveGesture:)];
         [self addGestureRecognizer:moveGesture];
@@ -187,7 +191,7 @@ static IQLabelView *lastTouchedView;
         
         [self showEditingHandles];
         [labelTextField becomeFirstResponder];
-     }
+    }
     return self;
 }
 
@@ -314,7 +318,7 @@ static IQLabelView *lastTouchedView;
 - (void)showEditingHandles
 {
     if (lastTouchedView != nil) {
-         [lastTouchedView hideEditingHandles];
+        [lastTouchedView hideEditingHandles];
     }
     
     isShowingEditingHandles = YES;
@@ -326,7 +330,7 @@ static IQLabelView *lastTouchedView;
     
     [self refresh];
     [labelTextField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground];
-
+    
     [delegate labelViewDidBeginEditing:self];
 }
 
@@ -381,11 +385,11 @@ static IQLabelView *lastTouchedView;
     CGFloat newCenterY = beginningCenter.y + (touchLocation.y - beginningPoint.y);
     if (enableMoveRestriction) {
         if (!(newCenterX - 0.5 * CGRectGetWidth(self.frame) > 0 &&
-            newCenterX + 0.5 * CGRectGetWidth(self.frame) < CGRectGetWidth(self.superview.bounds))) {
-             newCenterX = self.center.x;
+              newCenterX + 0.5 * CGRectGetWidth(self.frame) < CGRectGetWidth(self.superview.bounds))) {
+            newCenterX = self.center.x;
         }
         if (!(newCenterY - 0.5 * CGRectGetHeight(self.frame) > 0 &&
-            newCenterY + 0.5 * CGRectGetHeight(self.frame) < CGRectGetHeight(self.superview.bounds))) {
+              newCenterY + 0.5 * CGRectGetHeight(self.frame) < CGRectGetHeight(self.superview.bounds))) {
             newCenterY = self.center.y;
         }
         newCenter = CGPointMake(newCenterX, newCenterY);
@@ -422,7 +426,7 @@ static IQLabelView *lastTouchedView;
 
 - (void) changeLabelViewSizePinchGesture : (UIPinchGestureRecognizer*) recognizer {
     if ((recognizer.state == UIGestureRecognizerStateEnded
-        || recognizer.state == UIGestureRecognizerStateChanged) && rotateView.hidden == NO) {
+         || recognizer.state == UIGestureRecognizerStateChanged) && rotateView.hidden == NO) {
         
         CGFloat currentFontSize = labelTextField.font.pointSize;
         CGFloat newScale = currentFontSize * recognizer.scale;
@@ -457,7 +461,7 @@ static IQLabelView *lastTouchedView;
     if ([textField.text isEqualToString:@""]) {
         rotateView.hidden = YES;
     }
-
+    
     if (isShowingEditingHandles) {
         return YES;
     }
@@ -487,14 +491,19 @@ static IQLabelView *lastTouchedView;
     } else {
         rotateView.hidden = NO;
     }
-
+    
     [textField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground];
     [delegate labelDidEditing: self];
     return YES;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+    if([delegate respondsToSelector:@selector(labelViewDidStartEditing:)]) {
+        [delegate labelViewDidStartEditing:self];
+    }
+    [textField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground];
+    [textField resignFirstResponder];
+    return NO;
 }
 
 

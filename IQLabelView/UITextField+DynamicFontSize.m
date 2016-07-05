@@ -37,7 +37,7 @@ static const NSUInteger IQLVMinimumFontSize = 9;
 {
     
     NSString *text = (![self.text isEqualToString:@""] || !self.placeholder) ? self.text : self.placeholder;
-   
+    
     UIFont *font = [UIFont fontWithName:self.font.fontName size:self.font.pointSize];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text
@@ -50,12 +50,17 @@ static const NSUInteger IQLVMinimumFontSize = 9;
     float w1 = (ceilf(rectSize.size.width) + 24 < 50) ? self.frame.size.width : ceilf(rectSize.size.width) + 24;
     float h1 =(ceilf(rectSize.size.height) + 24 < 50) ? 50 : ceilf(rectSize.size.height) + 24;
     
-    if (needCustomBackground) { self.background = [[UIImage imageNamed:@"IQLabelView.bundle/text_form_background.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(24, 20, 24, 20)];}
-
+    if (needCustomBackground) {
+        self.background = [[UIImage imageNamed:@"IQLabelView.bundle/text_form_background.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(24, 20, 24, 20)];
+    }
+    
     
     CGRect viewFrame = self.superview.bounds;
-    viewFrame.size.width = (w1 < 2.0) ? minWidth : w1 + 24;
-    viewFrame.size.height = h1 + 16.0;
+    
+    viewFrame.size.width = (w1 < 2.0) ? minWidth + 32 : w1 + 32;
+    viewFrame.size.height = h1 + 24.0;
+    
+    
     self.superview.bounds = viewFrame;
     
 }
