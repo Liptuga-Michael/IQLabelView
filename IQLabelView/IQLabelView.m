@@ -489,6 +489,7 @@ static IQLabelView *lastTouchedView;
     }
 
     [textField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground];
+    [delegate labelDidEditing: self];
     return YES;
 }
 

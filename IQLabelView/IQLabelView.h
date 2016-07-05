@@ -182,6 +182,8 @@
  */
 - (void)labelViewDidBeginEditing:(IQLabelView *)label;
 
+- (void)labelDidEditing: (IQLabelView*)label;
+
 @end
 
 
