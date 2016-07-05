@@ -150,9 +150,9 @@ static IQLabelView *lastTouchedView;
         closeView.userInteractionEnabled = YES;
         [self addSubview:closeView];
         
-        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width-globalInset*2 - 8, self.bounds.size.height-globalInset*2, globalInset*2, globalInset*2)];
+        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width-globalInset*2 + 5, self.bounds.size.height-globalInset*2 + 5, globalInset*2 + 10, globalInset*2 + 10)];
         [rotateView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin)];
-        rotateView.backgroundColor = [UIColor whiteColor];
+        rotateView.backgroundColor = [UIColor clearColor];
         rotateView.layer.cornerRadius = globalInset;
         rotateView.contentMode = UIViewContentModeCenter;
         rotateView.userInteractionEnabled = YES;
@@ -427,8 +427,8 @@ static IQLabelView *lastTouchedView;
         CGFloat currentFontSize = labelTextField.font.pointSize;
         CGFloat newScale = currentFontSize * recognizer.scale;
         
-        if (newScale < 20.0) {
-            newScale = 20.0;
+        if (newScale < 10.0) {
+            newScale = 10.0;
         }
         if (newScale > 60.0) {
             newScale = 60.0;

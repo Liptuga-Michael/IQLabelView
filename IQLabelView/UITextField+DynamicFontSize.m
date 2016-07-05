@@ -54,7 +54,7 @@ static const NSUInteger IQLVMinimumFontSize = 9;
 
     
     CGRect viewFrame = self.superview.bounds;
-    viewFrame.size.width = (w1 < 8.0) ? minWidth + 40 : w1 + 40;
+    viewFrame.size.width = (w1 < 2.0) ? minWidth : w1 + 24;
     viewFrame.size.height = h1 + 16.0;
     self.superview.bounds = viewFrame;
     
