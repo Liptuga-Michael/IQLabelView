@@ -3,11 +3,14 @@
 //  Created by kcandr on 17/12/14.
 
 #import <UIKit/UIKit.h>
+#import "IQTextField.h"
 
 @protocol IQLabelViewDelegate;
 
-@interface IQLabelView : UIView 
+@interface IQLabelView : UIView
 
+
+@property (nonatomic, strong) IQTextField *labelTextField;
 /**
  * Text color.
  *
@@ -25,13 +28,13 @@
  * Custom background for IQLabelView.
  */
 @property (nonatomic, assign) BOOL needToMakeCustomBackground;
-/** 
+/**
  *Need to set minimum width for IQLabelView
-*/
+ */
 @property (nonatomic, assign) CGFloat minimumWidth;
 /**
  * Name of text field font.
- * 
+ *
  * Default: current system font
  */
 @property (nonatomic, copy) NSString *fontName;
@@ -61,6 +64,11 @@
  * Default: nil
  */
 @property (nonatomic, copy) NSAttributedString *attributedPlaceholder;
+
+
+@property (nonatomic, strong) NSString *text;
+
+@property (nonatomic, assign) BOOL enableToEditing;
 
 /*
  * Base delegate protocols.
@@ -162,19 +170,23 @@
 
 
 @required
-- (void)labelViewStartRotating:(IQLabelView*)label;
+- (void)labelViewBeganRotating:(IQLabelView*)label;
+- (void)labelViewRotatingChanged: (IQLabelView*)label;
 - (void)labelViewStopRotating:(IQLabelView*)label;
 
 - (void)labelViewStartZooming: (IQLabelView*)label;
 - (void)labelViewEndZooming: (IQLabelView*)label;
 
-- (void)labelViewStartMoving: (IQLabelView*)label;
+- (void)labelViewBeganMoving: (IQLabelView*)label;
+- (void)labelViewMovingChanged: (IQLabelView*)label;
 - (void)labelViewEndMoving: (IQLabelView*)label;
 
 /**
  *  @param label    A label object informing the delegate about action.
  */
-- (void)labelViewDidEndEditing:(IQLabelView *)label;
+- (void)labelViewDidEndEditing: (IQLabelView *)label;
+
+- (void)labelDidEditing: (IQLabelView*)label;
 
 
 /**
@@ -182,8 +194,4 @@
  */
 - (void)labelViewDidBeginEditing:(IQLabelView *)label;
 
-- (void)labelDidEditing: (IQLabelView*)label;
-
 @end
-
-

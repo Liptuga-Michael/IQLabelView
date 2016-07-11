@@ -8,7 +8,7 @@
 
 @implementation UITextField (DynamicFontSize)
 
-static const NSUInteger IQLVMaximumFontSize = 45;
+static const NSUInteger IQLVMaximumFontSize = 60;
 static const NSUInteger IQLVMinimumFontSize = 9;
 
 - (void)adjustsFontSizeToFillRect:(CGRect)newBounds
@@ -33,10 +33,16 @@ static const NSUInteger IQLVMinimumFontSize = 9;
     }
 }
 
-- (void)adjustsWidthToFillItsContentsWithMinumWidth: (CGFloat) minWidth andNeedCustomBackGround: (BOOL) needCustomBackground
+- (void)adjustsWidthToFillItsContentsWithMinumWidth: (CGFloat) minWidth andNeedCustomBackGround: (BOOL) needCustomBackground andString : (NSString*) currentString
 {
     
-    NSString *text = (![self.text isEqualToString:@""] || !self.placeholder) ? self.text : self.placeholder;
+    NSString *currentText = self.text;
+    
+    if ([self.text isEqualToString:@""] && currentString.length > 0) {
+        currentText = currentString;
+    }
+    
+    NSString *text = (![currentText isEqualToString:@""] || !self.placeholder) ? currentText : self.placeholder;
     
     UIFont *font = [UIFont fontWithName:self.font.fontName size:self.font.pointSize];
     
@@ -47,8 +53,8 @@ static const NSUInteger IQLVMinimumFontSize = 9;
                                                    options:NSStringDrawingUsesLineFragmentOrigin
                                                    context:nil];
     
-    float w1 = (ceilf(rectSize.size.width) + 24 < 50) ? self.frame.size.width : ceilf(rectSize.size.width) + 24;
-    float h1 =(ceilf(rectSize.size.height) + 24 < 50) ? 50 : ceilf(rectSize.size.height) + 24;
+    float w1 = (ceilf(rectSize.size.width) + 32 < 47) ? self.frame.size.width : ceilf(rectSize.size.width) + 32;
+    float h1 =(ceilf(rectSize.size.height) + 32 < 47) ? 47 : ceilf(rectSize.size.height) + 24;
     
     if (needCustomBackground) {
         self.background = [[UIImage imageNamed:@"IQLabelView.bundle/text_form_background.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(24, 20, 24, 20)];
@@ -57,7 +63,7 @@ static const NSUInteger IQLVMinimumFontSize = 9;
     
     CGRect viewFrame = self.superview.bounds;
     
-    viewFrame.size.width = (w1 < 2.0) ? minWidth + 32 : w1 + 32;
+    viewFrame.size.width = (w1 < 2.0) ? minWidth + 30 : w1 + 30;
     viewFrame.size.height = h1 + 24.0;
     
     

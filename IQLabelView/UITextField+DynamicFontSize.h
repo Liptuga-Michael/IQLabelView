@@ -18,7 +18,7 @@
 /** Adjust width to new text.
  *
  */
-- (void)adjustsWidthToFillItsContentsWithMinumWidth: (CGFloat) minWidth andNeedCustomBackGround: (BOOL) needCustomBackground;
+- (void)adjustsWidthToFillItsContentsWithMinumWidth: (CGFloat) minWidth andNeedCustomBackGround: (BOOL) needCustomBackground andString : (NSString*) currentString;
 
 @end
 
