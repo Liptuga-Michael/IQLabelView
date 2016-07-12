@@ -8,8 +8,8 @@
 
 @implementation UITextField (DynamicFontSize)
 
-static const NSUInteger IQLVMaximumFontSize = 60;
-static const NSUInteger IQLVMinimumFontSize = 9;
+static const NSUInteger IQLVMaximumFontSize = 120;
+static const NSUInteger IQLVMinimumFontSize = 20;
 
 - (void)adjustsFontSizeToFillRect:(CGRect)newBounds
 {

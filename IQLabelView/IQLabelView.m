@@ -81,11 +81,11 @@ static IQLabelView *lastTouchedView;
 
 - (float) maxWidthSize {
     if (currentDegreesAngle <= 90.0 && currentDegreesAngle >= 0.0) {
-        return [UIScreen mainScreen].bounds.size.width + (([UIScreen mainScreen].bounds.size.height - [UIScreen mainScreen].bounds.size.width) * currentDegreesAngle / 100) - 36.0;
+        return [UIScreen mainScreen].bounds.size.width + (([UIScreen mainScreen].bounds.size.height - [UIScreen mainScreen].bounds.size.width) * currentDegreesAngle / 100) - 44.0;
     } else if (currentDegreesAngle <= 200.0 && currentDegreesAngle > 90) {
-        return [UIScreen mainScreen].bounds.size.width + (([UIScreen mainScreen].bounds.size.height - [UIScreen mainScreen].bounds.size.width) * fabsf(currentDegreesAngle - 180.0) / 100) - 36.0;
+        return [UIScreen mainScreen].bounds.size.width + (([UIScreen mainScreen].bounds.size.height - [UIScreen mainScreen].bounds.size.width) * fabsf(currentDegreesAngle - 180.0) / 100) - 44.0;
     }
-    return [UIScreen mainScreen].bounds.size.width - 36.0;
+    return [UIScreen mainScreen].bounds.size.width - 44.0;
 }
 
 - (float) maxHeightSize {
@@ -159,8 +159,9 @@ static IQLabelView *lastTouchedView;
         labelTextField.text = @"";
         labelTextField.leftTextIndent = 14.0;
         labelTextField.rightTextIndent = 14.0;
+#warning NEED ADD
         labelTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-
+        /////////////////////
         if (!self.needToMakeCustomBackground) {
             border = [CAShapeLayer layer];
             border.strokeColor = borderColor.CGColor;
@@ -451,7 +452,7 @@ static IQLabelView *lastTouchedView;
         float angleDiff = deltaAngle - ang;
         currentDegreesAngle = fabsf(RADIANS_TO_DEGREES(-angleDiff));
         if (isMaxWidth == true) {
-            [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize], [self maxHeightSize])];
+            [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize] - 40.0, [self maxHeightSize])];
         }
         
         [self setTransform:CGAffineTransformMakeRotation(-angleDiff)];
@@ -476,11 +477,16 @@ static IQLabelView *lastTouchedView;
         CGFloat currentFontSize = labelTextField.font.pointSize;
         CGFloat newScale = currentFontSize * recognizer.scale;
         
-        if (newScale < 15.0) {
-            newScale = 15.0;
+        
+        CGFloat minimumScale = (self.enableToEditing == false) ? 60.0 : 22.0;
+        
+        
+        
+        if (newScale < minimumScale) {
+            newScale = minimumScale;
         }
-        if (newScale > 60.0) {
-            newScale = 60.0;
+        if (newScale > 120.0) {
+            newScale = 120.0;
         }
         
         if ((newScale >= labelTextField.font.pointSize) && (labelTextField.frame.size.width >= ([self maxWidthSize] - 26.0))) {
@@ -562,6 +568,7 @@ static IQLabelView *lastTouchedView;
     
     if (textField.text.length == 1 && [string isEqualToString:@""]) {
         labelTextField.text = @"";
+        labelTextField.font = [UIFont fontWithName:labelTextField.font.fontName size: (self.enableToEditing == false) ? 60.0 : 22.0];
         rotateView.hidden = YES;
     } else {
         rotateView.hidden = NO;
@@ -590,4 +597,3 @@ static IQLabelView *lastTouchedView;
 }
 
 @end
-
