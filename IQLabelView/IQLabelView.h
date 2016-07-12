@@ -177,9 +177,9 @@
 - (void)labelViewStartZooming: (IQLabelView*)label;
 - (void)labelViewEndZooming: (IQLabelView*)label;
 
-- (void)labelViewBeganMoving: (IQLabelView*)label;
-- (void)labelViewMovingChanged: (IQLabelView*)label;
-- (void)labelViewEndMoving: (IQLabelView*)label;
+- (void)labelViewBeganMoving: (IQLabelView*)label currentLocation : (CGPoint) location;
+- (void)labelViewMovingChanged: (IQLabelView*)label currentLocation : (CGPoint) location;
+- (void)labelViewEndMoving: (IQLabelView*)label currentLocation : (CGPoint) location;
 
 /**
  *  @param label    A label object informing the delegate about action.
@@ -195,3 +195,5 @@
 - (void)labelViewDidBeginEditing:(IQLabelView *)label;
 
 @end
+
+

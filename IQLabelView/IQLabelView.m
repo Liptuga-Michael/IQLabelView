@@ -160,7 +160,7 @@ static IQLabelView *lastTouchedView;
         labelTextField.leftTextIndent = 14.0;
         labelTextField.rightTextIndent = 14.0;
         labelTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-        /////////////////////
+
         if (!self.needToMakeCustomBackground) {
             border = [CAShapeLayer layer];
             border.strokeColor = borderColor.CGColor;
@@ -403,13 +403,13 @@ static IQLabelView *lastTouchedView;
         
         [self setCenter:[self estimatedCenter]];
         beginBounds = self.bounds;
-        [delegate labelViewBeganMoving:self];
+        [delegate labelViewBeganMoving:self currentLocation: touchLocation];
     } else if (recognizer.state == UIGestureRecognizerStateChanged) {
         [self setCenter:[self estimatedCenter]];
-        [delegate labelViewMovingChanged:self];
+        [delegate labelViewMovingChanged:self currentLocation: touchLocation];
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         [self setCenter:[self estimatedCenter]];
-        [delegate labelViewEndMoving:self];
+        [delegate labelViewEndMoving:self currentLocation: touchLocation];
     }
 }
 
@@ -449,16 +449,9 @@ static IQLabelView *lastTouchedView;
         float ang = atan2(touchLocation.y-center.y, touchLocation.x-center.x);
         
         float angleDiff = deltaAngle - ang;
-        
-        //NSLog(@"angleDiff = %f", angleDiff);
-        //NSLog(@"Output radians as degrees: %f", RADIANS_TO_DEGREES(-angleDiff));
-        
-        
         currentDegreesAngle = fabsf(RADIANS_TO_DEGREES(-angleDiff));
-        
         if (isMaxWidth == true) {
             [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize], [self maxHeightSize])];
-            NSLog(@"fabsf = %f", fabsf(RADIANS_TO_DEGREES(-angleDiff)));
         }
         
         [self setTransform:CGAffineTransformMakeRotation(-angleDiff)];
@@ -467,12 +460,6 @@ static IQLabelView *lastTouchedView;
     } else if ([recognizer state] == UIGestureRecognizerStateEnded) {
         [delegate labelViewStopRotating: self];
     }
-    
-    
-    
-    
-    
-    
     
     if (self.enableToEditing) {
         [labelTextField adjustsWidthToFillItsContentsWithMinumWidth:self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground andString:@""];
@@ -496,9 +483,6 @@ static IQLabelView *lastTouchedView;
             newScale = 60.0;
         }
         
-        NSLog(@"newScale = %f", newScale);
-        NSLog(@"labelTextField.frame.size.width = %f", labelTextField.frame.size.width);
-        
         if ((newScale >= labelTextField.font.pointSize) && (labelTextField.frame.size.width >= ([self maxWidthSize] - 26.0))) {
             [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize], [self maxHeightSize])];
             [labelTextField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground andString: @""];
@@ -516,9 +500,6 @@ static IQLabelView *lastTouchedView;
             maxHeight = labelTextField.frame.size.height;
             [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize], [self maxHeightSize])];
         }
-        
-        //[labelTextField adjustsFontSizeToFillRect:
-        
         recognizer.scale = 1;
         isMaxWidth = NO;
         
@@ -582,14 +563,14 @@ static IQLabelView *lastTouchedView;
     if (textField.text.length == 1 && [string isEqualToString:@""]) {
         labelTextField.text = @"";
         rotateView.hidden = YES;
-        NSLog(@"press Backspace.");
     } else {
         rotateView.hidden = NO;
     }
     
     [textField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground andString: string];
     
-    if (labelTextField.frame.size.width >= [self maxWidthSize] - 32  && ![string isEqualToString:@""]) {
+    if (labelTextField.frame.size.width >= [self maxWidthSize] - 32.0  && ![string isEqualToString:@""]) {
+        isMaxWidth = YES;
         [delegate labelDidEditing: self];
         return NO;
     }
