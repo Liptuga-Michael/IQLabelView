@@ -81,19 +81,19 @@ static IQLabelView *lastTouchedView;
 
 - (float) maxWidthSize {
     if (currentDegreesAngle <= 90.0 && currentDegreesAngle >= 0.0) {
-        return [UIScreen mainScreen].bounds.size.width + (([UIScreen mainScreen].bounds.size.height - [UIScreen mainScreen].bounds.size.width) * currentDegreesAngle / 100) - 44.0;
+        return [UIScreen mainScreen].bounds.size.width + (([UIScreen mainScreen].bounds.size.height - [UIScreen mainScreen].bounds.size.width) * currentDegreesAngle * 1.1 / 100) - 52.0;
     } else if (currentDegreesAngle <= 200.0 && currentDegreesAngle > 90) {
-        return [UIScreen mainScreen].bounds.size.width + (([UIScreen mainScreen].bounds.size.height - [UIScreen mainScreen].bounds.size.width) * fabsf(currentDegreesAngle - 180.0) / 100) - 44.0;
+        return [UIScreen mainScreen].bounds.size.width + (([UIScreen mainScreen].bounds.size.height - [UIScreen mainScreen].bounds.size.width) * fabsf(currentDegreesAngle - 180.0) / 100) - 52.0;
     }
-    return [UIScreen mainScreen].bounds.size.width - 44.0;
+    return [UIScreen mainScreen].bounds.size.width - 52.0;
 }
 
 - (float) maxHeightSize {
-    //    if (currentDegreesAngle <= 90.0 && currentDegreesAngle >= 0) {
-    //        return maxHeight * ((currentDegreesAngle / 100) + 1);
-    //    } else if (currentDegreesAngle <= 200.0 && currentDegreesAngle > 90) {
-    //        return maxHeight * ((fabsf(currentDegreesAngle  - 180)/ 100) + 1);
-    //    }
+    if (currentDegreesAngle <= 90.0 && currentDegreesAngle >= 0) {
+        return maxHeight - (24 - 24 * ((currentDegreesAngle * 1.1 / 100)));
+    } else if (currentDegreesAngle <= 200.0 && currentDegreesAngle > 90) {
+        return maxHeight - (24 - 24 * ((fabsf(currentDegreesAngle - 180)/ 100)));
+    }
     return maxHeight;
 }
 
@@ -452,7 +452,7 @@ static IQLabelView *lastTouchedView;
         float angleDiff = deltaAngle - ang;
         currentDegreesAngle = fabsf(RADIANS_TO_DEGREES(-angleDiff));
         if (isMaxWidth == true) {
-            [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize] - 40.0, [self maxHeightSize])];
+            [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize] - 40.0, [self maxHeightSize] - 8.0)];
         }
         
         [self setTransform:CGAffineTransformMakeRotation(-angleDiff)];
@@ -477,10 +477,7 @@ static IQLabelView *lastTouchedView;
         CGFloat currentFontSize = labelTextField.font.pointSize;
         CGFloat newScale = currentFontSize * recognizer.scale;
         
-        
-        CGFloat minimumScale = (self.enableToEditing == false) ? 60.0 : 22.0;
-        
-        
+        CGFloat minimumScale = (self.enableToEditing == false) ? 60.0 : 23.5;
         
         if (newScale < minimumScale) {
             newScale = minimumScale;
@@ -490,7 +487,7 @@ static IQLabelView *lastTouchedView;
         }
         
         if ((newScale >= labelTextField.font.pointSize) && (labelTextField.frame.size.width >= ([self maxWidthSize] - 26.0))) {
-            [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize], [self maxHeightSize])];
+            [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize], [self maxHeightSize] - 14.0)];
             [labelTextField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground andString: @""];
             recognizer.scale = 1;
             isMaxWidth = YES;
@@ -504,7 +501,7 @@ static IQLabelView *lastTouchedView;
         
         if (labelTextField.frame.size.width > [self maxWidthSize] - 26.0) {
             maxHeight = labelTextField.frame.size.height;
-            [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize], [self maxHeightSize])];
+            [labelTextField adjustsFontSizeToFillRect: CGRectMake(labelTextField.frame.origin.x, labelTextField.frame.origin.y, [self maxWidthSize], [self maxHeightSize] - 14.0)];
         }
         recognizer.scale = 1;
         isMaxWidth = NO;
@@ -568,7 +565,8 @@ static IQLabelView *lastTouchedView;
     
     if (textField.text.length == 1 && [string isEqualToString:@""]) {
         labelTextField.text = @"";
-        labelTextField.font = [UIFont fontWithName:labelTextField.font.fontName size: (self.enableToEditing == false) ? 60.0 : 22.0];
+        labelTextField.font = [UIFont fontWithName:labelTextField.font.fontName size: (self.enableToEditing == false) ? 60.0 : 23.5];
+        isMaxWidth = false;
         rotateView.hidden = YES;
     } else {
         rotateView.hidden = NO;

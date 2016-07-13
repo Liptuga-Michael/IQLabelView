@@ -9,7 +9,7 @@
 @implementation UITextField (DynamicFontSize)
 
 static const NSUInteger IQLVMaximumFontSize = 120;
-static const NSUInteger IQLVMinimumFontSize = 20;
+static const NSUInteger IQLVMinimumFontSize = 23.5;
 
 - (void)adjustsFontSizeToFillRect:(CGRect)newBounds
 {
@@ -64,8 +64,7 @@ static const NSUInteger IQLVMinimumFontSize = 20;
     CGRect viewFrame = self.superview.bounds;
     
     viewFrame.size.width = (w1 < 2.0) ? minWidth + 30 : w1 + 30;
-    viewFrame.size.height = h1 + 24.0;
-    
+    viewFrame.size.height = h1 + 48.0;
     
     self.superview.bounds = viewFrame;
     
