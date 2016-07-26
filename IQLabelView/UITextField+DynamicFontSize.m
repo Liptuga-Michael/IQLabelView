@@ -8,7 +8,7 @@
 
 @implementation UITextField (DynamicFontSize)
 
-static const NSUInteger IQLVMaximumFontSize = 120;
+static const NSUInteger IQLVMaximumFontSize = 140;
 static const NSUInteger IQLVMinimumFontSize = 23.5;
 
 - (void)adjustsFontSizeToFillRect:(CGRect)newBounds
@@ -36,7 +36,7 @@ static const NSUInteger IQLVMinimumFontSize = 23.5;
 - (void)adjustsWidthToFillItsContentsWithMinumWidth: (CGFloat) minWidth andNeedCustomBackGround: (BOOL) needCustomBackground andString : (NSString*) currentString
 {
     
-    NSString *currentText = self.text;
+    NSString *currentText = [NSString stringWithFormat: @"%@%@", self.text, currentString];
     
     if ([self.text isEqualToString:@""] && currentString.length > 0) {
         currentText = currentString;
@@ -53,8 +53,8 @@ static const NSUInteger IQLVMinimumFontSize = 23.5;
                                                    options:NSStringDrawingUsesLineFragmentOrigin
                                                    context:nil];
     
-    float w1 = (ceilf(rectSize.size.width) + 32 < 47) ? self.frame.size.width : ceilf(rectSize.size.width) + 32;
-    float h1 =(ceilf(rectSize.size.height) + 32 < 47) ? 47 : ceilf(rectSize.size.height) + 24;
+    float w1 = (ceilf(rectSize.size.width) < 2) ? self.frame.size.width : ceilf(rectSize.size.width) + 32;
+    float h1 =(ceilf(rectSize.size.height) + 32 < 40) ? 47 : ceilf(rectSize.size.height) + 24;
     
     if (needCustomBackground) {
         self.background = [[UIImage imageNamed:@"IQLabelView.bundle/text_form_background.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(24, 20, 24, 20)];

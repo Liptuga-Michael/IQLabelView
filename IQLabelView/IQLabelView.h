@@ -45,6 +45,15 @@
 @property (nonatomic, assign) CGFloat fontSize;
 
 /**
+ * Minimum size of text field font.
+ */
+@property (nonatomic, assign) CGFloat minFontSize;
+/**
+ * Maximum size of text field font.
+ */
+@property (nonatomic, assign) CGFloat maxFontSize;
+
+/**
  * Image for close button.
  *
  * Default: sticker_close.png from IQLabelView.bundle.
@@ -69,6 +78,10 @@
 @property (nonatomic, strong) NSString *text;
 
 @property (nonatomic, assign) BOOL enableToEditing;
+
+@property (nonatomic, assign) BOOL isAlreadyAdded;
+
+@property (nonatomic, assign) BOOL isLabelTextFieldEmpty;
 
 /*
  * Base delegate protocols.
@@ -195,4 +208,5 @@
 - (void)labelViewDidBeginEditing:(IQLabelView *)label;
 
 @end
+
 
