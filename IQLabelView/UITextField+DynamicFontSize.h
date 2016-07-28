@@ -20,6 +20,7 @@
  */
 - (void)adjustsWidthToFillItsContentsWithMinumWidth: (CGFloat) minWidth andNeedCustomBackGround: (BOOL) needCustomBackground andString : (NSString*) currentString;
 
+
 @end
 
 #endif

@@ -138,6 +138,22 @@
  */
 - (CGFloat)textAlpha;
 
+
+
+
+
+
+
+
+- (void)rotateViewPanGesture:(UIRotationGestureRecognizer *)recognizer;
+
+//- (void)moveGesture:(UIPanGestureRecognizer *)recognizer;
+
+- (void) changeLabelViewSizePinchGesture : (UIPinchGestureRecognizer*) recognizer;
+
+
+
+
 @end
 
 @protocol IQLabelViewDelegate <NSObject>
@@ -208,5 +224,4 @@
 - (void)labelViewDidBeginEditing:(IQLabelView *)label;
 
 @end
-
 

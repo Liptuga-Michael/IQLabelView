@@ -8,13 +8,11 @@
 
 @implementation UITextField (DynamicFontSize)
 
-static const NSUInteger IQLVMaximumFontSize = 140;
-static const NSUInteger IQLVMinimumFontSize = 23.5;
+static const NSUInteger IQLVMaximumFontSize = 160;
+static const NSUInteger IQLVMinimumFontSize = 20.0;
 
 - (void)adjustsFontSizeToFillRect:(CGRect)newBounds
 {
-    
-    
     NSString *text = (![self.text isEqualToString:@""] || !self.placeholder) ? self.text : self.placeholder;
     
     for (NSUInteger i = IQLVMaximumFontSize; i > IQLVMinimumFontSize; i--) {
@@ -36,6 +34,23 @@ static const NSUInteger IQLVMinimumFontSize = 23.5;
 - (void)adjustsWidthToFillItsContentsWithMinumWidth: (CGFloat) minWidth andNeedCustomBackGround: (BOOL) needCustomBackground andString : (NSString*) currentString
 {
     
+    
+    //    CGSize newSize = [self intrinsicContentSize : currentString];
+    //
+    //    NSLog(@"%@", NSStringFromCGSize([self intrinsicContentSize : currentString]));
+    //
+    //    CGRect viewFrame = self.superview.bounds;
+    //        viewFrame.size.width = newSize.width + 30;
+    //        viewFrame.size.height = newSize.height  + 60.0;
+    //
+    //        if (needCustomBackground) {
+    //            self.background = [[UIImage imageNamed:@"IQLabelView.bundle/text_form_background.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(24, 20, 24, 20)];
+    //        }
+    //
+    //    NSLog(@"New width = %f",  viewFrame.size.width);
+    //
+    //    self.superview.bounds = viewFrame;
+    
     NSString *currentText = [NSString stringWithFormat: @"%@%@", self.text, currentString];
     
     if ([self.text isEqualToString:@""] && currentString.length > 0) {
@@ -44,7 +59,7 @@ static const NSUInteger IQLVMinimumFontSize = 23.5;
     
     NSString *text = (![currentText isEqualToString:@""] || !self.placeholder) ? currentText : self.placeholder;
     
-    UIFont *font = [UIFont fontWithName:self.font.fontName size:self.font.pointSize];
+    UIFont *font = [UIFont fontWithName:self.font.fontName size: self.font.pointSize];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text
                                                                          attributes:@{ NSFontAttributeName : font }];
@@ -53,21 +68,40 @@ static const NSUInteger IQLVMinimumFontSize = 23.5;
                                                    options:NSStringDrawingUsesLineFragmentOrigin
                                                    context:nil];
     
-    float w1 = (ceilf(rectSize.size.width) < 2) ? self.frame.size.width : ceilf(rectSize.size.width) + 32;
-    float h1 =(ceilf(rectSize.size.height) + 32 < 40) ? 47 : ceilf(rectSize.size.height) + 24;
-    
     if (needCustomBackground) {
         self.background = [[UIImage imageNamed:@"IQLabelView.bundle/text_form_background.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(24, 20, 24, 20)];
     }
     
-    
     CGRect viewFrame = self.superview.bounds;
-    
-    viewFrame.size.width = (w1 < 2.0) ? minWidth + 30 : w1 + 30;
-    viewFrame.size.height = h1 + 48.0;
+    viewFrame.size.width = ceilf(rectSize.size.width) + 40;
+    viewFrame.size.height = ceilf(rectSize.size.height) + 64;
     
     self.superview.bounds = viewFrame;
-    
 }
+
+-(CGSize) intrinsicContentSize : (NSString*) currentString {
+    if (self.editing) {
+        
+        NSString *currentText = [NSString stringWithFormat: @"%@%@", self.text, currentString];
+        
+        if ([self.text isEqualToString:@""] && currentString.length > 0) {
+            currentText = currentString;
+        }
+        
+        UIFont *font = [UIFont fontWithName:self.font.fontName size: self.font.pointSize];
+        
+        NSString *text = (![currentText isEqualToString:@""] || !self.placeholder) ? currentText : self.placeholder;
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text
+                                                                             attributes:@{ NSFontAttributeName : font }];
+        
+        
+        return [attributedText boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGRectGetHeight(self.frame)-30)
+                                            options:NSStringDrawingUsesLineFragmentOrigin
+                                            context:nil].size;
+    } else {
+        return [super intrinsicContentSize];
+    }
+}
+
 
 @end
