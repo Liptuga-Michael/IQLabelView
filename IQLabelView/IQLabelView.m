@@ -121,7 +121,12 @@ static IQLabelView *lastTouchedView;
     [self refresh];
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame {
+    return [self initWithFrame: frame andEnableToEditing: false];
+}
+
+
+- (id)initWithFrame:(CGRect)frame andEnableToEditing: (BOOL) enableToEditing
 {
     if (frame.size.width < 25)     frame.size.width = 25;
     if (frame.size.height < 25)    frame.size.height = 25;
@@ -147,8 +152,9 @@ static IQLabelView *lastTouchedView;
         labelTextField.text = @"";
         
         //Set left and right indents for text in label text field
-        labelTextField.leftTextIndent = (self.enableToEditing) ? 10.0 : 8;
-        labelTextField.rightTextIndent = (self.enableToEditing) ? 5.0 : 0.0;
+        labelTextField.leftTextIndent = (enableToEditing) ? 10.0 : 0.0;
+        labelTextField.rightTextIndent = (enableToEditing) ? 5.0 : 0.0;
+        self.enableToEditing = enableToEditing;
         
         labelTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         if (!self.needToMakeCustomBackground) {
@@ -301,7 +307,9 @@ static IQLabelView *lastTouchedView;
 {
     isShowingEditingHandles = NO;
     
-    [labelTextField resignFirstResponder];
+    if ((labelTextField != nil) && [labelTextField respondsToSelector:@selector(resignFirstResponder)]) {
+        [labelTextField resignFirstResponder];
+    }
     
     [self refresh];
     
@@ -327,9 +335,13 @@ static IQLabelView *lastTouchedView;
     [labelTextField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground andString: @""];
     
     if (!self.enableToEditing) {
-        [delegate labelViewDidBeginEditing:self];
+        if([delegate respondsToSelector:@selector(labelViewDidBeginEditing:)]) {
+            [delegate labelViewDidBeginEditing:self];
+        }
     } else {
-        [delegate labelViewDidBeginEditing:self];
+        if([delegate respondsToSelector:@selector(labelViewDidBeginEditing:)]) {
+            [delegate labelViewDidBeginEditing:self];
+        }
     }
 }
 
@@ -408,7 +420,9 @@ static IQLabelView *lastTouchedView;
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
         deltaAngle = recognizer.rotation - CGAffineTransformGetAngle(self.transform);
         initialBounds = self.bounds;
-        [delegate labelViewBeganRotating: self];
+        if([delegate respondsToSelector:@selector(labelViewDidStartEditing:)]) {
+            [delegate labelViewBeganRotating: self];
+        }
     } else if ([recognizer state] == UIGestureRecognizerStateChanged) {
         
         float ang = recognizer.rotation;
@@ -426,9 +440,13 @@ static IQLabelView *lastTouchedView;
         }
         
         [self setNeedsDisplay];
-        [delegate labelViewRotatingChanged: self];
+        if([delegate respondsToSelector:@selector(labelViewRotatingChanged:)]) {
+            [delegate labelViewRotatingChanged: self];
+        }
     } else if ([recognizer state] == UIGestureRecognizerStateEnded) {
-        [delegate labelViewStopRotating: self];
+        if([delegate respondsToSelector:@selector(labelViewStopRotating:)]) {
+            [delegate labelViewStopRotating: self];
+        }
     }
 }
 
@@ -456,9 +474,9 @@ static IQLabelView *lastTouchedView;
     CGFloat zoomLevel = 1.0;
     
     if (newScale / currentFontSize > 1) {
-        zoomLevel = (newScale / currentFontSize) -  ((newScale / currentFontSize) - 1) * 0.9;
+        zoomLevel = (newScale / currentFontSize) -  ((newScale / currentFontSize) - 1) * 0.3;
     } else {
-        zoomLevel = newScale / currentFontSize + (1 - (newScale / currentFontSize)) * 0.9;
+        zoomLevel = newScale / currentFontSize + (1 - (newScale / currentFontSize)) * 0.3;
     }
     
     
@@ -503,6 +521,8 @@ static IQLabelView *lastTouchedView;
     }
     
     [textField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground andString:@""];
+    CGRect viewFrame = textField.superview.bounds;
+    labelTextField.bounds = viewFrame;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -514,6 +534,13 @@ static IQLabelView *lastTouchedView;
         [delegate labelDidEditing: self];
         return NO;
     }
+    
+    CGFloat maxWidth = [self maxWidthSize];
+    
+    if (labelTextField.frame.size.width <= maxWidth) {
+        isMaxWidth = false;
+    }
+    
     
     if (textField.text.length == 1 && [string isEqualToString:@""]) {
         labelTextField.text = @"";
@@ -528,10 +555,7 @@ static IQLabelView *lastTouchedView;
     }
     
     [textField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground andString: string];
-    
-    
     CGRect viewFrame = textField.superview.bounds;
-    
     labelTextField.bounds = viewFrame;
     
     if (labelTextField.frame.size.width >= [self maxWidthSize] - 16.0  && ![string isEqualToString:@""]) {
@@ -539,8 +563,6 @@ static IQLabelView *lastTouchedView;
         [delegate labelDidEditing: self];
         return NO;
     }
-    
-    CGFloat maxWidth = [self maxWidthSize];
     
     if ([self isLabelTextFieldEmpty] && labelTextField.frame.size.width > maxWidth) {
         CGFloat zoomLevel = maxWidth  / labelTextField.frame.size.width;
@@ -557,6 +579,9 @@ static IQLabelView *lastTouchedView;
         [delegate labelViewDidEndEditing:self];
     }
     [textField adjustsWidthToFillItsContentsWithMinumWidth: self.minimumWidth andNeedCustomBackGround: self.needToMakeCustomBackground andString:@""];
+    CGRect viewFrame = textField.superview.bounds;
+    labelTextField.bounds = viewFrame;
+    
     [self setNeedsDisplay];
     
     [textField resignFirstResponder];
@@ -564,3 +589,4 @@ static IQLabelView *lastTouchedView;
 }
 
 @end
+

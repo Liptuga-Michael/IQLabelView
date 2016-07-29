@@ -138,11 +138,8 @@
  */
 - (CGFloat)textAlpha;
 
-
-
-
-
-
+//- (id)initWithFrame:(CGRect)frame;
+- (id)initWithFrame:(CGRect)frame andEnableToEditing: (BOOL) enableToEditing;
 
 
 - (void)rotateViewPanGesture:(UIRotationGestureRecognizer *)recognizer;
@@ -203,9 +200,6 @@
 - (void)labelViewRotatingChanged: (IQLabelView*)label;
 - (void)labelViewStopRotating:(IQLabelView*)label;
 
-- (void)labelViewStartZooming: (IQLabelView*)label;
-- (void)labelViewEndZooming: (IQLabelView*)label;
-
 - (void)labelViewBeganMoving: (IQLabelView*)label currentLocation : (CGPoint) location;
 - (void)labelViewMovingChanged: (IQLabelView*)label currentLocation : (CGPoint) location;
 - (void)labelViewEndMoving: (IQLabelView*)label currentLocation : (CGPoint) location;
@@ -223,5 +217,5 @@
  */
 - (void)labelViewDidBeginEditing:(IQLabelView *)label;
 
-@end
 
+@end
